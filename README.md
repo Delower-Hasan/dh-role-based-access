@@ -126,7 +126,7 @@ Define custom roles in your app by specifying your role types (e.g., `type MyRol
 
 ## Contributing
 
-Contributions, issues, and feature requests are welcome. Check the [issues page](https://github.com/your-repo/dh-role-based-access/issues) if you'd like to contribute.
+Contributions, issues, and feature requests are welcome. Check the [issues page](https://github.com/delower-hasan/dh-role-based-access/issues) if you'd like to contribute.
 
 ## License
 
