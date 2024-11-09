@@ -6,9 +6,7 @@ import React, {
   Dispatch,
   SetStateAction,
 } from "react";
-
-// Define possible roles as strings, but allow flexibility for custom roles
-export type UserRoleType = string;
+import { UserRoleType } from "./types";
 
 interface UserRoleContextType<T extends UserRoleType> {
   role: T;
