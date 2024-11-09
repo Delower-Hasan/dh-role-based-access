@@ -1,5 +1,6 @@
 import React, { ReactNode } from "react";
-import { useUserRole, UserRoleType } from "./UserRoleContext";
+import { useUserRole } from "./UserRoleContext";
+import { UserRoleType } from "./types";
 
 interface RoleBasedAccessProps<T extends UserRoleType> {
   can?: T[]; // Only these roles can see the component

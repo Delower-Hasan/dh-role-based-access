@@ -131,3 +131,90 @@ Contributions, issues, and feature requests are welcome. Check the [issues page]
 ## License
 
 This project is licensed under the MIT License.
+
+### Access Control Middleware for React and Next.js
+
+## Step 1: Import the Middleware
+
+```bash
+import { AccessControlMiddleware } from 'install dh-role-based-access';
+```
+
+## Step 2: Define Access Rules
+
+```bash
+  const accessRules = {
+    global: {
+      restricted: ['/dashboard/*'],
+      restrictAuthUser: ['/login', '/register'],
+      isAuthenticated: true,
+    },
+    roles: {
+      user: {
+        restricted: ['/admin-panel'],
+      },
+      admin: {
+        restricted: [],
+      },
+      guest: {
+        restricted: ['/profile'],
+      }
+    }
+  };
+
+```
+
+### Step 3: Configure the Middleware in Your Application
+
+For React:
+
+```bash
+ import React from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import Home from './components/Home';
+import { AccessControlMiddleware, UserRoleProvider } from 'install dh-role-based-access';
+import AdminPanel from './components/AdminPanel';
+
+function App() {
+
+  return (
+    <UserRoleProvider initialRole="guest">
+      <Router>
+        <AccessControlMiddleware rules={accessRules}>
+          <Switch>
+            <Route path="/" exact component={Home} />
+            <Route path="/admin-panel" component={AdminPanel} />
+            {/* other routes */}
+          </Switch>
+        </AccessControlMiddleware>
+      </Router>
+    </UserRoleProvider>
+  );
+}
+
+export default App;
+
+```
+
+For Next.js:
+
+```bash
+ import { AppProps } from 'next/app';
+import { AccessControlMiddleware, UserRoleProvider } from 'install dh-role-based-access';
+
+function MyApp({ Component, pageProps }: AppProps) {
+  const isAuthenticated = true; // Adjust based on your authentication logic
+
+  return (
+    <UserRoleProvider initialRole="guest">
+      <AccessControlMiddleware rules={accessRules} isAuthenticated={isAuthenticated}>
+        <Component {...pageProps} />
+      </AccessControlMiddleware>
+    </UserRoleProvider>
+  );
+}
+
+export default MyApp;
+
+
+```

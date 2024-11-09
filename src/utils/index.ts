@@ -1,0 +1,1 @@
+export { matchesPath } from "./matchesPath";

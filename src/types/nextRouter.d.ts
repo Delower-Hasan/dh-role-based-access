@@ -1,3 +1,6 @@
 declare module "next/router" {
-  export function useRouter(): { back: () => void };
+  export function useRouter(): {
+    back: () => void;
+    asPath: string;
+  };
 }

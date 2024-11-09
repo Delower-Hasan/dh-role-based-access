@@ -8,7 +8,7 @@ type NavigationHook = {
 
 export function useNavigateBack(): NavigationHook {
   const [currentPath, setCurrentPath] = useState<string>("");
-  const [nextRouter, setNextRouter] = useState<any>(null); // Using 'any' type here to avoid type issues
+  const [nextRouter, setNextRouter] = useState<any>(null);
 
   // Dynamically import next/router if available
   useEffect(() => {
@@ -23,7 +23,6 @@ export function useNavigateBack(): NavigationHook {
       });
   }, []);
 
-  // For React Router (browser-side), use window.location.pathname
   const navigate = useNavigate();
 
   const goBack = () => {

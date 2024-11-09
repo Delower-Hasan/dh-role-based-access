@@ -1,7 +1,7 @@
 {
   "name": "dh-role-based-access",
   "version": "1.0.2",
-  "description": "A React/Next.js package for role-based access control, contact: dhhasansaha11@gmail.com",
+  "description": "A React/Next.js package for role-based access control",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
@@ -26,5 +26,12 @@
   "dependencies": {
     "react-router-dom": "^6.28.0",
     "react-toastify": "^10.0.6"
-  }
+  },
+  "keywords": [
+    "react",
+    "next.js",
+    "role-based-access",
+    "rbac",
+    "access-control"
+  ]
 }
