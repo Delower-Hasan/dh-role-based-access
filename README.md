@@ -137,13 +137,13 @@ This project is licensed under the MIT License.
 ## Step 1: Import the Middleware
 
 ```bash
-import { AccessControlMiddleware } from 'install dh-role-based-access';
+import { AccessControlMiddleware,IAccessRules } from 'dh-role-based-access';
 ```
 
 ## Step 2: Define Access Rules
 
 ```bash
-  const accessRules = {
+  const accessRules:IAccessRules = {
     global: {
       restricted: ['/dashboard/*'],
       restrictAuthUser: ['/login', '/register'],
@@ -203,11 +203,10 @@ For Next.js:
 import { AccessControlMiddleware, UserRoleProvider } from 'install dh-role-based-access';
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const isAuthenticated = true; // Adjust based on your authentication logic
 
   return (
     <UserRoleProvider initialRole="guest">
-      <AccessControlMiddleware rules={accessRules} isAuthenticated={isAuthenticated}>
+      <AccessControlMiddleware rules={accessRules} >
         <Component {...pageProps} />
       </AccessControlMiddleware>
     </UserRoleProvider>
@@ -218,3 +217,18 @@ export default MyApp;
 
 
 ```
+
+## User Authentication and Path Restriction Notes
+
+- **Authenticated User Access**:
+
+  - If the user is authenticated (`authenticated: true`), they can access global restricted pages.
+  - If the user is **not** authenticated, they cannot access any of the global restricted pages.
+
+- **User Restricted Paths**:
+
+  - If a path is listed in the **user restricted array**, it will be restricted for that user, regardless of their authentication status (authenticated or not).
+
+- **Restrict Authenticated Users**:
+  - The **restrictAuthUser** setting is used for paths that are restricted to authenticated users.
+  - If the user is authenticated, these are the pages they cannot access.

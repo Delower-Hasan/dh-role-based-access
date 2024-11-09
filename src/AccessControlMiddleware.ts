@@ -19,8 +19,11 @@ export const AccessControlMiddleware = ({
     const { global, roles } = rules;
     const roleRules = roles[role] || {};
 
-    if (global.restricted && matchesPath(global.restricted, currentPath)) {
-      toast.error(`Access to this page is restricted`);
+    if (
+      !global.isAuthenticated &&
+      matchesPath(global.restricted, currentPath)
+    ) {
+      // console.warn(`Access to this page is restricted`);
       goBack();
       return;
     }
@@ -29,16 +32,13 @@ export const AccessControlMiddleware = ({
       global.isAuthenticated &&
       matchesPath(global.restrictAuthUser, currentPath)
     ) {
-      toast.error(`Authenticated users cannot access this page`);
+      // console.warn(`Authenticated users cannot access this page`);
       goBack();
       return;
     }
 
-    if (
-      roleRules.restricted &&
-      matchesPath(roleRules.restricted, currentPath)
-    ) {
-      toast.error(`${role} has no access to this page`);
+    if (matchesPath(roleRules.restricted, currentPath)) {
+      // console.warn(`${role} has no access to this page`);
       goBack();
       return;
     }

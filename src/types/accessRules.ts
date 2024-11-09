@@ -1,5 +1,5 @@
 interface IRoleAccessControl {
-  restricted?: string[];
+  restricted: string[];
 }
 
 interface IGlobalRules {
