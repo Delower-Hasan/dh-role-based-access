@@ -120,19 +120,26 @@ export default UserProfile;
   - `role`: The current role of the user.
   - `setRole`: Function to update the current user role.
 
-## Customization
+### Access Control Middleware for React (Not Applicable for Next.js)
 
-Define custom roles in your app by specifying your role types (e.g., `type MyRoles = 'admin' | 'editor' | 'viewer'`) and pass them to the `UserRoleProvider` and `RoleBasedAccess` components.
+> **Note:**  
+> We do not provide this middleware feature for Next.js, as it already includes its own middleware. To prevent any conflicts, we have chosen not to use it with Next.js
+> We provide access control middleware for React, but it is not applicable to Next.js, as Next.js already includes its own middleware. To avoid potential conflicts, we have chosen not to integrate this feature with Next.js.
 
-## Contributing
+## User Authentication and Path Restriction Notes
 
-Contributions, issues, and feature requests are welcome. Check the [issues page](https://github.com/delower-hasan/dh-role-based-access/issues) if you'd like to contribute.
+- **Authenticated User Access**:
 
-## License
+  - If the user is authenticated (`authenticated: true`), they can access global restricted pages.
+  - If the user is **not** authenticated, they cannot access any of the global restricted pages.
 
-This project is licensed under the MIT License.
+- **User Restricted Paths**:
 
-### Access Control Middleware for React and Next.js
+  - If a path is listed in the **user restricted array**, it will be restricted for that user, regardless of their authentication status (authenticated or not).
+
+- **Restrict Authenticated Users**:
+  - The **restrictAuthUser** setting is used for paths that are restricted to authenticated users.
+  - If the user is authenticated, these are the pages they cannot access.
 
 ## Step 1: Import the Middleware
 
@@ -196,39 +203,14 @@ export default App;
 
 ```
 
-For Next.js:
+## Customization
 
-```bash
- import { AppProps } from 'next/app';
-import { AccessControlMiddleware, UserRoleProvider } from 'install dh-role-based-access';
+Define custom roles in your app by specifying your role types (e.g., `type MyRoles = 'admin' | 'editor' | 'viewer'`) and pass them to the `UserRoleProvider` and `RoleBasedAccess` components.
 
-function MyApp({ Component, pageProps }: AppProps) {
+## Contributing
 
-  return (
-    <UserRoleProvider initialRole="guest">
-      <AccessControlMiddleware rules={accessRules} >
-        <Component {...pageProps} />
-      </AccessControlMiddleware>
-    </UserRoleProvider>
-  );
-}
+Contributions, issues, and feature requests are welcome. Check the [issues page](https://github.com/delower-hasan/dh-role-based-access/issues) if you'd like to contribute.
 
-export default MyApp;
+## License
 
-
-```
-
-## User Authentication and Path Restriction Notes
-
-- **Authenticated User Access**:
-
-  - If the user is authenticated (`authenticated: true`), they can access global restricted pages.
-  - If the user is **not** authenticated, they cannot access any of the global restricted pages.
-
-- **User Restricted Paths**:
-
-  - If a path is listed in the **user restricted array**, it will be restricted for that user, regardless of their authentication status (authenticated or not).
-
-- **Restrict Authenticated Users**:
-  - The **restrictAuthUser** setting is used for paths that are restricted to authenticated users.
-  - If the user is authenticated, these are the pages they cannot access.
+This project is licensed under the MIT License.
