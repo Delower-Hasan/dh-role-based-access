@@ -179,7 +179,7 @@ For React:
  import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Home from './components/Home';
-import { AccessControlMiddleware, UserRoleProvider } from 'install dh-role-based-access';
+import { AccessControlMiddleware, UserRoleProvider } from 'dh-role-based-access';
 import AdminPanel from './components/AdminPanel';
 
 function App() {
