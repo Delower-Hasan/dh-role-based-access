@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { useUserRole } from "./UserRoleContext";
-import { toast } from "react-toastify";
 import { IAccessRules, UserRoleType } from "./types";
 import { useNavigateBack } from "./hook/useNavigateBack";
 import { matchesPath } from "./utils";
@@ -15,34 +14,32 @@ export const AccessControlMiddleware = ({
   const { role } = useUserRole<UserRoleType>();
   const { goBack, currentPath } = useNavigateBack();
 
-  useEffect(() => {
+  const isAccessDenied = (): boolean => {
     const { global, roles } = rules;
     const roleRules = roles[role] || {};
+    return (
+      (!global.isAuthenticated &&
+        matchesPath(global.restricted, currentPath)) ||
+      matchesPath(roleRules.restricted, currentPath)
+    );
+  };
 
-    if (
-      !global.isAuthenticated &&
-      matchesPath(global.restricted, currentPath)
-    ) {
-      // console.warn(`Access to this page is restricted`);
-      goBack();
-      return;
-    }
-
+  useEffect(() => {
+    const { global } = rules;
     if (
       global.isAuthenticated &&
       matchesPath(global.restrictAuthUser, currentPath)
     ) {
-      // console.warn(`Authenticated users cannot access this page`);
       goBack();
-      return;
     }
+    if (isAccessDenied() && !global.errorMessage) {
+      goBack();
+    }
+  }, [rules, currentPath]);
 
-    if (matchesPath(roleRules.restricted, currentPath)) {
-      // console.warn(`${role} has no access to this page`);
-      goBack();
-      return;
-    }
-  }, [rules, role, currentPath]);
+  if (isAccessDenied() && rules.global.errorMessage) {
+    return rules.global.errorMessage;
+  }
 
   return children;
 };

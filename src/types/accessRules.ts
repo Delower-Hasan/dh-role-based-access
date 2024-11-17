@@ -6,6 +6,7 @@ interface IGlobalRules {
   restricted?: string[];
   restrictAuthUser?: string[];
   isAuthenticated: boolean;
+  errorMessage?: React.ReactNode;
 }
 
 export default interface IAccessRules {
