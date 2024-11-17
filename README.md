@@ -61,6 +61,13 @@ const Dashboard = () => {
         <div>Admin and Editor Content</div>
       </RoleBasedAccess>
 
+      <RoleBasedAccess can={["admin", "editor"]}>
+        <div>Admin and Editor Content </div>
+        <RoleBasedAccess canNot={["editor"]}>
+          <div>Only Admin Content but Not Editor Content</div>
+        </RoleBasedAccess>
+      </RoleBasedAccess>
+
       <RoleBasedAccess canNot={["guest"]}>
         <div>Content for Registered Users</div>
       </RoleBasedAccess>
@@ -99,6 +106,10 @@ const UserProfile = () => {
 export default UserProfile;
 ```
 
+## Customization
+
+Define custom roles in your app by specifying your role types (e.g., `type MyRoles = 'admin' | 'editor' | 'viewer'`) and pass them to the `UserRoleProvider` and `RoleBasedAccess` components.
+
 ## API Reference
 
 ### `UserRoleProvider`
@@ -120,41 +131,45 @@ export default UserProfile;
   - `role`: The current role of the user.
   - `setRole`: Function to update the current user role.
 
-### Access Control Middleware for React (Not Applicable for Next.js)
+## Access Control Middleware for React (Not Applicable for Next.js)
 
 > **Note:**  
-> We do not provide this middleware feature for Next.js, as it already includes its own middleware. To prevent any conflicts, we have chosen not to use it with Next.js
 > We provide access control middleware for React, but it is not applicable to Next.js, as Next.js already includes its own middleware. To avoid potential conflicts, we have chosen not to integrate this feature with Next.js.
 
-## User Authentication and Path Restriction Notes
+### User Authentication and Path Restriction Notes
 
 - **Authenticated User Access**:
 
   - If the user is authenticated (`authenticated: true`), they can access global restricted pages.
   - If the user is **not** authenticated, they cannot access any of the global restricted pages.
+  - If an errorMessage component is defined, it will be displayed instead of redirecting.
 
 - **User Restricted Paths**:
 
   - If a path is listed in the **user restricted array**, it will be restricted for that user, regardless of their authentication status (authenticated or not).
+  - If access is denied and an errorMessage component is defined, it will be displayed instead of redirecting.
 
 - **Restrict Authenticated Users**:
   - The **restrictAuthUser** setting is used for paths that are restricted to authenticated users.
   - If the user is authenticated, these are the pages they cannot access.
+  - If an errorMessage component is defined, it will redirect but won't display errorMessage component for restrictedAuthUser.
 
-## Step 1: Import the Middleware
+### Step 1: Import the Middleware
 
 ```bash
-import { AccessControlMiddleware,IAccessRules } from 'dh-role-based-access';
+import { AccessControlMiddleware, IAccessRules } from 'dh-role-based-access';
 ```
 
-## Step 2: Define Access Rules
+### Step 2: Define Access Rules
 
 ```bash
+
   const accessRules:IAccessRules = {
     global: {
       restricted: ['/dashboard/*'],
       restrictAuthUser: ['/login', '/register'],
       isAuthenticated: true,
+      errorMessage: <div>You do not have access to this page.</div>, // Custom error message component
     },
     roles: {
       user: {
@@ -202,10 +217,6 @@ function App() {
 export default App;
 
 ```
-
-## Customization
-
-Define custom roles in your app by specifying your role types (e.g., `type MyRoles = 'admin' | 'editor' | 'viewer'`) and pass them to the `UserRoleProvider` and `RoleBasedAccess` components.
 
 ## Contributing
 
